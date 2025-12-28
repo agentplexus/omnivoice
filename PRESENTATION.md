@@ -54,12 +54,12 @@ Building voice agents requires integrating **multiple systems**:
 │                           OmniVoice                                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  ┌──────────┐   ┌──────────┐   ┌────────────────────────────────┐  │
-│  │   TTS    │   │   STT    │   │         Voice Agent            │  │
-│  │Text→Audio│   │Audio→Text│   │   Real-time bidirectional      │  │
-│  └────┬─────┘   └────┬─────┘   └──────────────┬─────────────────┘  │
-│       │              │                        │                    │
-│       └──────────────┴────────────────────────┘                    │
+│  ┌──────────┐   ┌──────────┐   ┌────────────────────────────────┐   │
+│  │   TTS    │   │   STT    │   │         Voice Agent            │   │
+│  │Text→Audio│   │Audio→Text│   │   Real-time bidirectional      │   │
+│  └────┬─────┘   └────┬─────┘   └──────────────┬─────────────────┘   │
+│       │              │                        │                     │
+│       └──────────────┴────────────────────────┘                     │
 │                              │                                      │
 │  ┌───────────────────────────┴───────────────────────────────────┐  │
 │  │                     Provider Layer                            │  │
@@ -225,9 +225,9 @@ type Session interface {
 
 ---
 
-# Twilio Provider (`omnivoice-twilio`)
+# Twilio Provider
 
-Full telephony stack for phone call agents.
+`omnivoice-twilio` - Full telephony stack for phone call agents.
 
 ```go
 import (
@@ -255,9 +255,9 @@ call, _ := cs.MakeCall(ctx, "+15559876543")
 
 ---
 
-# ElevenLabs Provider (`omnivoice-elevenlabs`)
+# ElevenLabs Provider
 
-Premium voice quality for TTS and STT.
+`omnivoice-elevenlabs` - Premium voice quality for TTS and STT.
 
 ```go
 import (
