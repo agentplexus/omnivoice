@@ -7,8 +7,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
-	"os"
 
 	"github.com/agentplexus/omnivoice/tts"
 )
@@ -75,6 +73,4 @@ func main() {
 
 	// Placeholder to avoid unused import errors
 	_ = ctx
-	_ = os
-	_ = log
 }

@@ -23,10 +23,12 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func main() {
@@ -51,7 +53,10 @@ func main() {
 	addr := ":8080"
 	log.Printf("Starting server on %s", addr)
 
-	server := &http.Server{Addr: addr}
+	server := &http.Server{
+		Addr:              addr,
+		ReadHeaderTimeout: 10 * time.Second,
+	}
 	go func() {
 		if err := server.ListenAndServe(); err != http.ErrServerClosed {
 			log.Fatalf("Server error: %v", err)
@@ -94,7 +99,9 @@ func handleInboundCall(w http.ResponseWriter, r *http.Request) {
 </Response>`, wsURL, from)
 
 	w.Header().Set("Content-Type", "application/xml")
-	w.Write([]byte(twiml))
+	if _, err := w.Write([]byte(twiml)); err != nil {
+		slog.Error("failed to write TwiML response", "error", err, "callSid", callSID)
+	}
 }
 
 // handleCallStatus handles Twilio status callbacks.
