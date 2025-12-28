@@ -1,5 +1,11 @@
 # OmniVoice
 
+[![Build Status][build-status-svg]][build-status-url]
+[![Lint Status][lint-status-svg]][lint-status-url]
+[![Go Report Card][goreport-svg]][goreport-url]
+[![Docs][docs-godoc-svg]][docs-godoc-url]
+[![License][license-svg]][license-url]
+
 Voice abstraction layer for AgentPlexus supporting TTS, STT, and Voice Agents across multiple providers and transport protocols.
 
 ## Architecture Overview
@@ -267,3 +273,16 @@ Poor: > 1500ms feels laggy
 - [Cartesia](https://cartesia.ai/)
 - [Vapi](https://vapi.ai/)
 - [Retell AI](https://www.retellai.com/)
+
+ [build-status-svg]: https://github.com/agentplexus/omnivoice/actions/workflows/ci.yaml/badge.svg?branch=main
+ [build-status-url]: https://github.com/agentplexus/omnivoice/actions/workflows/ci.yaml
+ [lint-status-svg]: https://github.com/agentplexus/omnivoice/actions/workflows/lint.yaml/badge.svg?branch=main
+ [lint-status-url]: https://github.com/agentplexus/omnivoice/actions/workflows/lint.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/agentplexus/omnivoice
+ [goreport-url]: https://goreportcard.com/report/github.com/agentplexus/omnivoice
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/agentplexus/omnivoice
+ [docs-godoc-url]: https://pkg.go.dev/github.com/agentplexus/omnivoice
+ [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
+ [license-url]: https://github.com/agentplexus/omnivoice/blob/master/LICENSE
+ [used-by-svg]: https://sourcegraph.com/github.com/agentplexus/omnivoice/-/badge.svg
+ [used-by-url]: https://sourcegraph.com/github.com/agentplexus/omnivoice?badge
