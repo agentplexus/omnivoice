@@ -134,64 +134,66 @@ type CallSystem interface {
 }
 
 // CallOption configures an outbound call.
-type CallOption func(*callOptions)
+type CallOption func(*CallOptions)
 
-type callOptions struct {
-	from           string
-	timeout        time.Duration
-	machineDetect  bool
-	record         bool
-	whisper        string
-	agentConfig    *agent.Config
-	statusCallback string
+// CallOptions holds parsed options for MakeCall.
+// Exported so provider implementations can access option values.
+type CallOptions struct {
+	From           string
+	Timeout        time.Duration
+	MachineDetect  bool
+	Record         bool
+	Whisper        string
+	AgentConfig    *agent.Config
+	StatusCallback string
 }
 
 // WithFrom sets the outbound caller ID.
 func WithFrom(from string) CallOption {
-	return func(o *callOptions) {
-		o.from = from
+	return func(o *CallOptions) {
+		o.From = from
 	}
 }
 
 // WithTimeout sets the call timeout.
 func WithTimeout(timeout time.Duration) CallOption {
-	return func(o *callOptions) {
-		o.timeout = timeout
+	return func(o *CallOptions) {
+		o.Timeout = timeout
 	}
 }
 
 // WithMachineDetection enables answering machine detection.
 func WithMachineDetection() CallOption {
-	return func(o *callOptions) {
-		o.machineDetect = true
+	return func(o *CallOptions) {
+		o.MachineDetect = true
 	}
 }
 
 // WithRecording enables call recording.
 func WithRecording() CallOption {
-	return func(o *callOptions) {
-		o.record = true
+	return func(o *CallOptions) {
+		o.Record = true
 	}
 }
 
 // WithWhisper sets a whisper message for the agent.
 func WithWhisper(message string) CallOption {
-	return func(o *callOptions) {
-		o.whisper = message
+	return func(o *CallOptions) {
+		o.Whisper = message
 	}
 }
 
 // WithAgent automatically attaches a voice agent to the call.
 func WithAgent(config *agent.Config) CallOption {
-	return func(o *callOptions) {
-		o.agentConfig = config
+	return func(o *CallOptions) {
+		o.AgentConfig = config
 	}
 }
 
 // WithStatusCallback sets a webhook URL for status updates.
 func WithStatusCallback(url string) CallOption {
-	return func(o *callOptions) {
-		o.statusCallback = url
+	return func(o *CallOptions) {
+		o.StatusCallback = url
 	}
 }
 
