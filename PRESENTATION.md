@@ -1,52 +1,7 @@
 ---
 marp: true
-theme: default
+theme: agentplexus
 paginate: true
-backgroundColor: #1a1a2e
-color: #eaeaea
-style: |
-  section {
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  }
-  h1, h2, h3 {
-    color: #00d4ff;
-  }
-  code {
-    background-color: #16213e;
-    color: #00ff88;
-  }
-  pre {
-    background-color: #16213e;
-    border-radius: 8px;
-  }
-  table {
-    font-size: 0.8em;
-  }
-  th {
-    background-color: #0f3460;
-    color: #00d4ff;
-  }
-  td {
-    background-color: #16213e;
-  }
-  a {
-    color: #00d4ff;
-  }
-  .columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  .highlight {
-    color: #00ff88;
-    font-weight: bold;
-  }
-  .provider-box {
-    background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
-    border-radius: 8px;
-    padding: 1rem;
-    margin: 0.5rem;
-  }
 ---
 
 # OmniVoice
