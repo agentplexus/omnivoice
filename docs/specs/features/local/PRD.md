@@ -258,4 +258,3 @@ Voice profiles are stored locally and are model-agnostic:
 - [F5-TTS MLX](https://github.com/lucasnewman/f5-tts-mlx)
 - [Qwen3-TTS Apple Silicon](https://github.com/kapi2800/qwen3-tts-apple-silicon)
 - [MLX](https://opensource.apple.com/projects/mlx)
-- [IDEATION_CHAT_LOCAL.md](../../../IDEATION_CHAT_LOCAL.md)

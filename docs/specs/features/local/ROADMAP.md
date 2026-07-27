@@ -276,4 +276,3 @@ Go Client                    Python Server
 
 - [PRD.md](./PRD.md) - Product requirements
 - [TRD.md](./TRD.md) - Technical requirements
-- [IDEATION_CHAT_LOCAL.md](../../../../omnivoice/IDEATION_CHAT_LOCAL.md) - Original ideation
