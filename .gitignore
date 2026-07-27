@@ -17,3 +17,6 @@ providers/whisper-mlx/server/localstt_pb2_grpc.py
 # Local Go workspace (references sibling checkouts)
 go.work
 go.work.sum
+
+# Ideation transcripts (not committed)
+IDEATION_CHAT*.md
