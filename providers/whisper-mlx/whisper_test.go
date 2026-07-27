@@ -30,6 +30,26 @@ func skipIfNoServer(t *testing.T, p *Provider) {
 	}
 }
 
+// TestNormalizeLanguage verifies BCP-47 locales are reduced to the ISO 639-1
+// primary language subtag that Whisper expects.
+func TestNormalizeLanguage(t *testing.T) {
+	cases := map[string]string{
+		"":        "",
+		"en":      "en",
+		"en-US":   "en",
+		"en-GB":   "en",
+		"EN-us":   "en",
+		"zh-Hans": "zh",
+		"pt_BR":   "pt",
+		" fr-FR ": "fr",
+	}
+	for in, want := range cases {
+		if got := normalizeLanguage(in); got != want {
+			t.Errorf("normalizeLanguage(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
+
 // TestWhisper_New tests provider creation.
 func TestWhisper_New(t *testing.T) {
 	p, err := New(getTestEndpoint())

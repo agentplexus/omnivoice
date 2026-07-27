@@ -1,9 +1,10 @@
 module github.com/plexusone/omnivoice-core
 
-go 1.26.0
+go 1.26.4
 
 require (
 	github.com/grokify/mogo v0.74.6
+	github.com/plexusone/terminology-spec v0.1.0
 	github.com/redis/go-redis/v9 v9.21.0
 	github.com/spf13/cobra v1.10.2
 	google.golang.org/grpc v1.82.1
@@ -19,5 +20,5 @@ require (
 	golang.org/x/net v0.57.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.40.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260715232425-e75dac1f907d // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260724162435-b2f20204f0df // indirect
 )

@@ -9,3 +9,11 @@ __pycache__/
 # Generated Python proto stubs (regenerate with ./generate_proto.sh)
 providers/f5tts/server/localvoice_pb2.py
 providers/f5tts/server/localvoice_pb2_grpc.py
+providers/f5tts-mlx/server/localtts_pb2.py
+providers/f5tts-mlx/server/localtts_pb2_grpc.py
+providers/whisper-mlx/server/localstt_pb2.py
+providers/whisper-mlx/server/localstt_pb2_grpc.py
+
+# Local Go workspace (references sibling checkouts)
+go.work
+go.work.sum

@@ -124,6 +124,10 @@ omnivoice/
 │   ├── azure/              # Azure Speech
 │   └── assemblyai/         # AssemblyAI provider
 │
+├── terminology/            # Shared Pronouncer + CaseCorrector engine
+│                           # (spoken form before TTS; displayed form after STT)
+│                           # See docs/terminology.md
+│
 ├── schema/                 # Embedded JSON Schemas
 │   ├── schema.go           # //go:embed directives
 │   └── transcript-v1.schema.json  # Transcript format schema
@@ -455,6 +459,25 @@ if loader, ok := provider.(tts.ModelManager); ok {
 
 // Synthesize locally - no API calls
 result, _ := provider.Synthesize(ctx, "Hello from local TTS!", tts.SynthesisConfig{})
+```
+
+Whisper MLX provides matching local STT (BCP-47 locales like `en-US` are
+normalized to the ISO-639-1 code Whisper expects):
+
+```go
+import (
+    "github.com/plexusone/omnivoice"
+    _ "github.com/plexusone/omnivoice-core/providers/whisper-mlx"
+
+    "github.com/plexusone/omnivoice-core/stt"
+)
+
+// Transcribe locally - no API calls
+provider, _ := omnivoice.GetSTTProvider("whisper-mlx")
+result, _ := provider.Transcribe(ctx, audioBytes, stt.TranscriptionConfig{
+    Language:             "en-US",
+    EnableWordTimestamps: true,
+})
 ```
 
 See the [Local TTS Providers](https://plexusone.github.io/omnivoice-core/local-tts/) guide for setup instructions.

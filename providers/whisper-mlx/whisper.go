@@ -21,6 +21,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc"
@@ -99,8 +101,11 @@ func (p *Provider) Transcribe(ctx context.Context, audio []byte, config stt.Tran
 		EnablePunctuation:    config.EnablePunctuation,
 	}
 
-	if config.Language != "" {
-		pbConfig.Language = &config.Language
+	// Whisper expects an ISO 639-1 language code (e.g. "en"), but callers
+	// commonly pass a BCP-47 locale (e.g. "en-US"). Strip the region/script
+	// subtag so both forms work.
+	if lang := normalizeLanguage(config.Language); lang != "" {
+		pbConfig.Language = &lang
 	}
 	if config.Model != "" {
 		pbConfig.Model = &config.Model
@@ -163,10 +168,12 @@ func (p *Provider) Transcribe(ctx context.Context, audio []byte, config stt.Tran
 // TranscribeFile transcribes audio from a file path.
 // For local providers, this reads the file and calls Transcribe.
 func (p *Provider) TranscribeFile(ctx context.Context, filePath string, config stt.TranscriptionConfig) (*stt.TranscriptionResult, error) {
-	// Read the file and delegate to Transcribe
-	// Note: For a production implementation, you might want to stream the file
-	// or have the server read it directly.
-	return nil, fmt.Errorf("whisper-mlx: TranscribeFile not implemented - use Transcribe with audio bytes")
+	audio, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("whisper-mlx: failed to read audio file %s: %w", filePath, err)
+	}
+
+	return p.Transcribe(ctx, audio, config)
 }
 
 // TranscribeURL transcribes audio from a URL.
@@ -324,6 +331,21 @@ type AvailableModel struct {
 	Description  string
 	SizeMB       int64
 	IsDownloaded bool
+}
+
+// normalizeLanguage reduces a BCP-47 locale tag to the ISO 639-1 primary
+// language subtag that Whisper expects (e.g. "en-US" -> "en", "zh-Hans" -> "zh").
+// An empty input returns an empty string so callers can leave the language
+// unset for auto-detection.
+func normalizeLanguage(lang string) string {
+	lang = strings.TrimSpace(lang)
+	if lang == "" {
+		return ""
+	}
+	if i := strings.IndexAny(lang, "-_"); i >= 0 {
+		lang = lang[:i]
+	}
+	return strings.ToLower(lang)
 }
 
 // Close closes the gRPC connection.
