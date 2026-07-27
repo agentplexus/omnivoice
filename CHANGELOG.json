@@ -7,6 +7,40 @@
   "maintainers": ["grokify", "johncwang@gmail.com"],
   "releases": [
     {
+      "version": "v0.16.0",
+      "date": "2026-07-26",
+      "commit": "8d4d79d",
+      "highlights": [
+        { "description": "Shared terminology engine for TTS pronunciation and subtitle case-correction, backed by terminology-spec with 247 embedded terms" },
+        { "description": "Whisper MLX `TranscribeFile` fix and BCP-47 language code normalization" }
+      ],
+      "added": [
+        { "description": "`terminology/`: shared Pronouncer and CaseCorrector engine wrapping terminology-spec", "commit": "8db5bb1" },
+        { "description": "`Pronouncer.Apply()`: rewrite spoken forms before TTS synthesis, per BCP-47 locale", "commit": "8db5bb1" },
+        { "description": "`CaseCorrector.Apply()`: fix displayed forms in STT-derived subtitle text", "commit": "8db5bb1" },
+        { "description": "Re-export `Builtin()`, `Curated()`, `All()`, `LoadDir()` from terminology-spec", "commit": "8db5bb1" },
+        { "description": "`docs/terminology.md`: guide for the terminology engine with usage examples", "commit": "fb1f2c4" }
+      ],
+      "fixed": [
+        { "description": "Whisper MLX `TranscribeFile` now reads file and delegates to `Transcribe`", "commit": "019e6ce" },
+        { "description": "Whisper MLX normalizes BCP-47 language codes (en-US) to ISO 639-1 (en)", "commit": "019e6ce" }
+      ],
+      "documentation": [
+        { "description": "Updated `docs/local-tts.md` with Whisper MLX section and BCP-47 handling", "commit": "fb1f2c4" },
+        { "description": "v0.16.0 release notes at `docs/releases/v0.16.0.md`" }
+      ],
+      "tests": [
+        { "description": "Unit tests for Pronouncer and CaseCorrector", "commit": "b2bf28b" },
+        { "description": "Unit tests for `normalizeLanguage` in whisper-mlx", "commit": "9e125de" }
+      ],
+      "dependencies": [
+        { "description": "Add `github.com/plexusone/terminology-spec` v0.1.0", "commit": "3247260" }
+      ],
+      "chore": [
+        { "description": "Gitignore generated Python proto stubs and go.work", "commit": "7631ea8" }
+      ]
+    },
+    {
       "version": "v0.15.0",
       "date": "2026-06-27",
       "highlights": [
