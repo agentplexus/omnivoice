@@ -130,6 +130,74 @@ if cacher, ok := provider.(tts.ProfileCacher); ok {
 }
 ```
 
+## Whisper MLX Provider (STT)
+
+Whisper MLX is a local speech-to-text provider that transcribes audio on Apple Silicon, producing text with per-segment confidence scores and optional word-level timestamps.
+
+### Requirements
+
+- Apple Silicon Mac (M1/M2/M3/M4)
+- Python 3.11+ (ARM64)
+- ~1.6GB disk space for the `large-v3-turbo` model weights
+
+### Installation
+
+```bash
+# Navigate to the server directory
+cd omnivoice-core/providers/whisper-mlx/server
+
+# Create ARM64 virtual environment
+arch -arm64 python3 -m venv .venv
+
+# Install dependencies
+arch -arm64 .venv/bin/pip install -r requirements.txt
+
+# Generate Python proto stubs
+./generate_proto.sh
+```
+
+### Starting the Server
+
+```bash
+# Start with the default model (large-v3-turbo)
+arch -arm64 .venv/bin/python3 whisper_server.py
+
+# Select a specific Whisper model
+arch -arm64 .venv/bin/python3 whisper_server.py --model large-v3-turbo
+```
+
+The model downloads from Hugging Face on first use (~1.6GB for `large-v3-turbo`) and is cached under the Hugging Face cache for subsequent runs. The server listens on `unix:///tmp/omnivoice-whisper.sock` by default.
+
+### Go Client Usage
+
+```go
+import (
+    "github.com/plexusone/omnivoice"
+    _ "github.com/plexusone/omnivoice-core/providers/whisper-mlx" // Auto-register
+
+    "github.com/plexusone/omnivoice-core/stt"
+)
+
+// Create provider using the registry
+provider, err := omnivoice.GetSTTProvider("whisper-mlx",
+    omnivoice.WithEndpoint("unix:///tmp/omnivoice-whisper.sock"),
+)
+if err != nil {
+    log.Fatal(err)
+}
+
+// Transcribe audio bytes with word-level timestamps
+result, err := provider.Transcribe(ctx, audioBytes, stt.TranscriptionConfig{
+    Language:             "en-US", // BCP-47 accepted; normalized to "en"
+    EnableWordTimestamps: true,
+})
+
+// Or transcribe a file directly
+result, err = provider.TranscribeFile(ctx, "narration.wav", stt.TranscriptionConfig{})
+```
+
+Whisper expects an ISO 639-1 language code (e.g. `en`), but the Go provider automatically normalizes BCP-47 locale tags — `en-US` and `zh-Hans` become `en` and `zh` before the request is sent, so either form works. Leave `Language` empty to let Whisper auto-detect.
+
 ## Capability Interfaces
 
 Local providers implement additional capability interfaces beyond the base `tts.Provider`:
@@ -267,12 +335,16 @@ The model downloads from Hugging Face on first use. If it fails:
 1. Check socket exists: `ls -la /tmp/omnivoice-f5tts.sock`
 2. Restart server: `pkill -f f5tts_server.py && ./run.sh`
 
-## Proto Definition
+## Proto Definitions
 
-The local voice service is defined in `proto/localvoice/v1/localvoice.proto`:
+Local providers speak one of two gRPC services over the Unix Domain Socket.
+
+### LocalTTS (F5-TTS MLX)
+
+Defined in `proto/localtts/v1/localtts.proto`:
 
 ```protobuf
-service LocalVoice {
+service LocalTTS {
   rpc Synthesize(SynthesizeRequest) returns (stream AudioChunk);
   rpc SynthesizeWithReference(ReferenceSynthesizeRequest) returns (stream AudioChunk);
   rpc PrepareVoiceProfile(PrepareVoiceProfileRequest) returns (PrepareVoiceProfileResponse);
@@ -283,8 +355,27 @@ service LocalVoice {
 }
 ```
 
+### LocalSTT (Whisper MLX)
+
+Defined in `proto/localstt/v1/localstt.proto`:
+
+```protobuf
+service LocalSTT {
+  rpc Transcribe(TranscribeRequest) returns (TranscribeResponse);
+  rpc TranscribeStream(stream AudioChunk) returns (stream TranscriptEvent);
+  rpc Health(HealthRequest) returns (HealthResponse);
+  rpc LoadModel(LoadModelRequest) returns (LoadModelResponse);
+  rpc UnloadModel(UnloadModelRequest) returns (UnloadModelResponse);
+  rpc RuntimeInfo(RuntimeInfoRequest) returns (RuntimeInfoResponse);
+  rpc ListModels(ListModelsRequest) returns (ListModelsResponse);
+}
+```
+
+> The legacy `proto/localvoice/v1` service predates these and is retained only for the older `providers/f5tts` implementation; new local providers use `localtts`/`localstt`.
+
 ## See Also
 
 - [Voice Cloning Guide](voice-cloning.md) - General voice cloning concepts
 - [Provider Registry](registry.md) - How provider registration works
+- [Whisper MLX Provider README](https://github.com/plexusone/omnivoice-core/tree/main/providers/whisper-mlx) - Local STT provider details
 - [Local Provider TRD](specs/features/local/TRD.md) - Technical design document

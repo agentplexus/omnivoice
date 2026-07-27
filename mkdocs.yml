@@ -52,6 +52,7 @@ nav:
   - Guides:
       - Voice Architecture: voice-architecture.md
       - Local TTS/STT Providers: local-tts.md
+      - Terminology (Pronunciation & Case): terminology.md
       - Transcript Format: transcript.md
       - Testing with Mocks: testing.md
       - Observability: observability.md

@@ -32,11 +32,11 @@ pip install -r requirements.txt
 ```go
 import (
     "github.com/plexusone/omnivoice"
-    _ "github.com/plexusone/omnivoice-core/providers/f5tts"
+    _ "github.com/plexusone/omnivoice-core/providers/f5tts-mlx"
 )
 
 func main() {
-    provider, _ := omnivoice.GetTTSProvider("f5tts")
+    provider, _ := omnivoice.GetTTSProvider("f5tts-mlx")
     result, _ := provider.Synthesize(ctx, "Hello world", tts.SynthesisConfig{})
 }
 ```
