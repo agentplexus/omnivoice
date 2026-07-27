@@ -12,6 +12,8 @@ Project-specific guidelines for omnivoice-core.
 - **Session storage** - Call state persistence (`storage/`)
 - **Barge-in detection** - User interruption handling (`bargein/`)
 - **Audio codecs** - Encoding/decoding utilities (`codec/`)
+- **Local providers** - On-device TTS/STT via gRPC/UDS (`providers/f5tts-mlx/`, `providers/whisper-mlx/`)
+- **Terminology engine** - Shared Pronouncer and CaseCorrector for TTS/subtitles (`terminology/`)
 
 ## Package Architecture
 
@@ -24,7 +26,11 @@ omnivoice-core/           # Core interfaces + global registry
     ├── gateway/          # Voice gateway framework
     ├── storage/          # Session persistence
     ├── bargein/          # Interruption detection
-    └── codec/            # Audio encoding/decoding
+    ├── codec/            # Audio encoding/decoding
+    ├── terminology/      # Pronouncer + CaseCorrector (wraps terminology-spec)
+    └── providers/
+        ├── f5tts-mlx/    # Local F5-TTS via MLX on Apple Silicon
+        └── whisper-mlx/  # Local Whisper STT via MLX on Apple Silicon
 
 omni-deepgram/            # Deepgram STT/TTS provider
 omni-openai/              # OpenAI TTS provider
